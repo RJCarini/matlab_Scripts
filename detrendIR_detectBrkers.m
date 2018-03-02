@@ -13,7 +13,7 @@
 
 % Load IR images into array I (#rows x #cols x #frames):
 % This file available in matlab_SampleData repository.
-path = '/Users/rjcarini/Documents/GitHub/matlab_SampleData/';
+path = '/Users/rjcarini/Documents/GitHub/matlab_TestData/';
 load([path,'sampleImageSeries.mat'])
 
 
@@ -21,7 +21,7 @@ load([path,'sampleImageSeries.mat'])
 
 % Choose reference region centered on your area of interest for use in
 % thresholding algorithm:
-ref3d = I(310:339,210:239,:);
+ref3d = I(160:189,60:89,:);
 ref2d = reshape(ref3d,[size(ref3d,1)*size(ref3d,2),size(ref3d,3)]);
 
 % Use detrend the data through two median-smoothing operations:
@@ -58,3 +58,22 @@ legend([p0,p1,p2],'All reference data','Median at each time step','Smoothed refe
 Idetrend = I-reftrendmat;
 [Idetrend,brkMask] = detectBreakers_singlecam(Idetrend,refdetrend);
 
+%% Play IR imagery with mask overlay
+
+figure('position',[50 50 600 600])
+for i=1:length(timevec)
+    clf
+    h = imagesc(imrotate(I(:,:,i),180));
+    colormap gray
+    hold on
+    RGB = cat(3,brkMask(:,:,i),zeros(size(brkMask,1),size(brkMask,2)));
+    RGB = cat(3,RGB,zeros(size(brkMask,1),size(brkMask,2)));
+    M = image(imrotate(RGB,180));
+    alphadat = imrotate(RGB(:,:,1),180).*0.3;
+    set(M,'AlphaData',alphadat);
+    set(gca,'XTickLabel',[],'YTickLabel',[])
+    axis equal
+    axis tight
+    title('TOWER IR')
+    drawnow
+end
