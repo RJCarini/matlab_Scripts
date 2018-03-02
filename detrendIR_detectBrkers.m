@@ -34,7 +34,7 @@ refdetrend = ref3d-repmat(reftrendsmooth,size(ref3d,1),size(ref3d,2));
 reftrendmat = repmat(reftrendsmooth,size(I,1),size(I,2));
 
 % Visualize trends:
-figure('position',[50 50 800 300])
+figure('position',[50 50 600 400])
 hold on
 for i=1:length(timevec)
     p0 = plot(repmat(timevec(i),size(ref2d,1),1),ref2d(:,i),'.k');
